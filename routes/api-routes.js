@@ -33,10 +33,11 @@ router.post("/api/workouts", ({ body }, res) => {
       });
   });
   
-  router.put("/api/transaction/bulk", ({ body }, res) => {
-    Transaction.insertMany(body)
-      .then(dbTransaction => {
-        res.json(dbTransaction);
+  router.put("/api/workouts/:id" , (req, res) => {
+      const workoutId = req.params.id;
+    Workouts.findOneAndUpdate({_id: workoutId}, {$push:{exercises: req.body}})
+      .then(dbWorkout => {
+        res.json(dbWorkout);
       })
       .catch(err => {
         res.status(400).json(err);
